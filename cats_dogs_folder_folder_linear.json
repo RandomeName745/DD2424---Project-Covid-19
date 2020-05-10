@@ -1,0 +1,24 @@
+
+{
+  "augmentation_techniques":[
+	["gamma",
+	{"gamma":1.5}],
+	
+	["crop",
+	{"startFrom":"CENTER",
+	 "percentage":"0.9"}],
+
+	["flip",
+	{"flip":1}],
+
+	["resize",
+	{"percentage" : 1.5,
+	 "method":"INTER_NEAREST"}]
+  ],
+  "generation_mode":"linear",
+  "problem":"classification",
+  "output_mode":"folders",
+  "output_path":"/home/alex/anaconda3/envs/DD2424-project/DD2424---Project-Covid-19/git/augmented_images/",
+  "annotation_mode":"folders",
+  "input_path":"/home/alex/anaconda3/envs/DD2424-project/DD2424---Project-Covid-19/git/datasets/"
+}
