@@ -33,7 +33,7 @@ Run **evaluate.py** to evaluate the model's performance on the test dataset.
 1. The original paper: https://arxiv.org/abs/1512.03385
 2. The TensorFlow official tutorials: https://tensorflow.google.cn/beta/tutorials/quickstart/advanced
 
-################### Instructions: Apply CLAHE and augment images ##################################
+## Instructions: Apply CLAHE and augment images ##################################
 
 techniques:
 	zoom
