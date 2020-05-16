@@ -35,6 +35,8 @@ Run **evaluate.py** to evaluate the model's performance on the test dataset.
 
 ## Instructions: Apply CLAHE and augment images ##################################
 
+All files you need are stored in the folder 'clahe_and_augmentation'
+
 techniques:
 	zoom
 	flip
