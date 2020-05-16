@@ -36,4 +36,5 @@ if __name__ == '__main__':
         print("loss: {:.5f}, test accuracy: {:.5f}".format(test_loss.result(),
                                                            test_accuracy.result()))
 
-    print("The accuracy on test set is: {:.3f}%".format(test_accuracy.result()*100))
+    print("The accuracy on test set is: {:.3f}%".format(
+        test_accuracy.result()*100))
