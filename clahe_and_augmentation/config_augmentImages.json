@@ -1,0 +1,22 @@
+
+{
+  "augmentation_techniques":[
+	["gaussian_blur", 
+	{"kernel" : 3}],
+
+	["gaussian_noise",
+	{"mean" : 0,
+	"sigma":5}],
+
+	["elastic",
+	{"alpha":0.5,"sigma":0.5}],
+
+	["none",{}]
+  ],
+  "generation_mode":"linear",
+  "problem":"classification",
+  "output_mode":"folders",
+  "output_path":"/media/alex/shared/documents/Uni/Masterstudium/Auslandsstudium/DD2424/project/datasets/dataset_clahe_augmentedCLODSA/",
+  "annotation_mode":"folders",
+  "input_path":"/media/alex/shared/documents/Uni/Masterstudium/Auslandsstudium/DD2424/project/datasets/dataset_clahe/"
+}
