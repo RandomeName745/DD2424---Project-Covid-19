@@ -4,6 +4,7 @@ from models.resnet import resnet_18, resnet_34, resnet_50, resnet_101, resnet_15
 import config
 from prepare_data import generate_datasets
 import math
+import os
 
 
 def get_model():
@@ -16,7 +17,8 @@ def get_model():
         model = resnet_101()
     if config.model == "resnet152":
         model = resnet_152()
-    model.build(input_shape=(None, config.image_height, config.image_width, config.channels))
+    model.build(input_shape=(None, config.image_height,
+                             config.image_width, config.channels))
     model.summary()
     return model
 
@@ -28,23 +30,26 @@ if __name__ == '__main__':
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
 
-
     # get the original_dataset
     train_dataset, valid_dataset, test_dataset, train_count, valid_count, test_count = generate_datasets()
-
 
     # create model
     model = get_model()
 
+    if os.path.isfile(config.save_model_dir + ".index"):
+        model.load_weights(config.save_model_dir)
+        print("checkpoint loaded")
     # define loss and optimizer
     loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
     optimizer = tf.keras.optimizers.Adadelta()
 
     train_loss = tf.keras.metrics.Mean(name='train_loss')
-    train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
+    train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(
+        name='train_accuracy')
 
     valid_loss = tf.keras.metrics.Mean(name='valid_loss')
-    valid_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='valid_accuracy')
+    valid_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(
+        name='valid_accuracy')
 
     @tf.function
     def train_step(images, labels):
@@ -52,7 +57,8 @@ if __name__ == '__main__':
             predictions = model(images, training=True)
             loss = loss_object(y_true=labels, y_pred=predictions)
         gradients = tape.gradient(loss, model.trainable_variables)
-        optimizer.apply_gradients(grads_and_vars=zip(gradients, model.trainable_variables))
+        optimizer.apply_gradients(grads_and_vars=zip(
+            gradients, model.trainable_variables))
 
         train_loss(loss)
         train_accuracy(labels, predictions)
@@ -73,12 +79,14 @@ if __name__ == '__main__':
         valid_accuracy.reset_states()
         step = 0
         for images, labels in train_dataset:
+            print()
             step += 1
             train_step(images, labels)
             print("Epoch: {}/{}, step: {}/{}, loss: {:.5f}, accuracy: {:.5f}".format(epoch + 1,
                                                                                      config.EPOCHS,
                                                                                      step,
-                                                                                     math.ceil(train_count / config.BATCH_SIZE),
+                                                                                     math.ceil(
+                                                                                         train_count / config.BATCH_SIZE),
                                                                                      train_loss.result(),
                                                                                      train_accuracy.result()))
 
@@ -93,4 +101,5 @@ if __name__ == '__main__':
                                                                   valid_loss.result(),
                                                                   valid_accuracy.result()))
 
-    model.save_weights(filepath=config.save_model_dir, save_format='tf')
+    model.save_weights(filepath=config.save_model_dir +
+                       "_" + config.model, save_format='tf')
